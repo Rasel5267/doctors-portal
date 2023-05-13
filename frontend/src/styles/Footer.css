@@ -1,0 +1,16 @@
+footer { 
+	margin-top: auto;
+	background-color: var(--secondary-color);
+	padding: 0 1rem;
+}
+
+.copyright {
+	font-size: 15px;
+	padding: 1rem 0;
+}
+
+@media (max-width: 450px) {
+	.copyright {
+		font-size: 13px;
+	}
+}

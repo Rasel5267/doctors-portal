@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+*, ::before, ::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #ffffff;
+  --secondary-color: #f1f1f1;
+  --accent-color: #39c7a5;
+  --text-color: #333333;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  min-height: 55px;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: var(--accent-color);
+  transition: color 0.3s ease-in-out;
+}
+
+a:hover {
+  color: var(--text-color);
+}
+
+li {
+  list-style: none;
+}
+
+p {
+  padding: 0;
+  margin: 0;
+}
+
+.spinner {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3333332e;
+  z-index: 999;
+}
+
+.spinner-color {
+  color: var(--accent-color);
+}
+
+.home,
+.dashboard {
+  padding: 0 1.5rem;
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.doctor_img {
+  max-width: 410px;
+  height: 300px;
+}
+
+.single-doctor {
+  max-width: 400px;
+  border: 1px solid #ddd;
+  margin: 1rem auto;
+}
+
+.footer {
+  background-color: var(--secondary-color);
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-text {
+  color: var(--text-color);
+  font-size: 1rem;
+  transition: color 0.3s ease-in-out;
+}
+
+.notification-text:hover {
+  color: var(--accent-color);
+}
+
+@media (max-width: 450px) {
+  .dashboard,
+  .home {
+    padding: 0 1rem;
+  }
+}
