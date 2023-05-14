@@ -53,14 +53,7 @@ const authController = async (req, res) => {
 		} else {
 			res.status(200).send({
 				success: true,
-				data: {
-					name: user.name,
-					email: user.email,
-					isAdmin: user.isAdmin,
-					isDoctor: user.isDoctor,
-					notification: user.notification,
-					seennotification: user.seennotification
-				}
+				data: user
 			})
 		};
 	} catch (error) {
@@ -82,11 +75,11 @@ const applyDoctor = async (req, res) => {
 		const notification = adminUser.notification;
 		notification.push({
 			type: 'apply-doctor-request',
-			message: `${newDoctor.firstName} ${newDoctor.lastName} has applied for a doctor account`,
+			message: `${newDoctor.name} has applied for a doctor account`,
 			data: {
 				doctorId: newDoctor._id,
-				name: newDoctor.firstName + " " + newDoctor.lastName,
-				onClickPath: '/dashboard/doctors/doctorId'
+				name: newDoctor.name,
+				onClickPath: '/dashboard/doctors'
 			}
 		})
 		await userModel.findByIdAndUpdate(adminUser._id, {notification});
@@ -117,4 +110,61 @@ const getAllNotification = async (req, res) => {
 	}
 }
 
-module.exports = { loginController, registerController, authController, applyDoctor, getAllNotification };
+const deleteAllNotification = async (req, res) => {
+	try {
+		const user = await userModel.findOne({_id: req.body.userId});
+		user.notification = [];
+		user.seennotification = [];
+
+		const updateUser = await user.save();
+		updateUser.password = undefined;
+		res.status(200).send({
+			success: true,
+			message: 'all notification mark as read',
+			data: updateUser
+		});
+	} catch (error) {
+		res.status(500).send({ success: false, message: error.message})
+	}
+}
+
+const getUserInfo = async (req, res) => {
+	try {
+		const user = await userModel.findOne({ _id: req.body.userId });
+		res.status(200).send({
+			success: true,
+			message: 'User data fetch success',
+			data: user
+		});
+	} catch (error) {
+		res.status(500).send({ success: false, message: error.message})
+	}
+}
+
+const updateProfile = async (req, res) => {
+	try {
+		const user = await userModel.findOneAndUpdate( {_id: req.body.userId}, req.body );
+		res.status(200).send({
+			success: true,
+			message: 'User data fetch success',
+			data: user
+		});
+	} catch (error) {
+		res.status(500).send({ success: false, message: error.message})
+	}
+}
+
+const getAllDoctors = async (req, res) => {
+	try {
+		const doctors = await doctorModel.find({ status: 'approved' });
+		res.status(200).send({
+			success: true,
+			message: 'Doctors list fetch success',
+			data: doctors
+		});
+	} catch (error) {
+		res.status(500).send({ success: false, message: error.message})
+	}
+}
+
+module.exports = { loginController, registerController, authController, applyDoctor, getAllNotification, deleteAllNotification, getUserInfo, updateProfile, getAllDoctors };

@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./common/Layout";
 import DashboardLayout from "./common/DashboardLayout";
-import { Dashboard, Error, Home, Login, Notification, Register, SingleDoctor, ApplyDoctor, Appointments, Doctors, Profile, Users } from "./pages";
+import { Dashboard, Error, Home, Login, Notification, Register, SingleDoctor, ApplyDoctor, Appointments, Doctors, Profile, Users, UserProfile } from "./pages";
 import { useSelector } from 'react-redux';
 import Spinner from "./components/Spinner";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -26,8 +26,10 @@ const App = () => {
               <Route path="/dashboard/apply-doctor" element = {<ApplyDoctor />} />
               <Route path="/dashboard/appointments" element = {<Appointments />} />
               <Route path="/dashboard/doctors" element = {<Doctors />} />
-              <Route path="/dashboard/profile" element = {<Profile />} />
               <Route path="/dashboard/users" element = {<Users />} />
+              <Route path="/dashboard/user/profile/:id" element = {<Profile />} />
+              <Route path="/dashboard/doctor/profile/:id" element = {<Profile />} />
+              <Route path="/dashboard/profile/:id" element = {<UserProfile />} />
             </Route>
           </Route>
         </Route>

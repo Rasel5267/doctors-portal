@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { hideLoading, showLoading } from "../../redux/features/alertSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-
+import moment from 'moment';
 
 const ApplyDoctor = () => {
   const {user} = useSelector(state => state.user);
@@ -13,7 +13,12 @@ const ApplyDoctor = () => {
   const onFinishHandler = async(values) => {
     try {
       dispatch(showLoading());
-      const res = await axios.post('http://localhost:8000/user/apply-doctor', {...values, userId: user._id}, {
+      const res = await axios.post('http://localhost:8000/user/apply-doctor', {...values, userId: user._id,
+      timings: [
+        moment(values.timings[0]).format("HH:mm"),
+        moment(values.timings[1]).format("HH:mm"),
+      ]
+    }, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -38,13 +43,8 @@ const ApplyDoctor = () => {
         <h4>Personal Details:</h4>
           <Row gutter={20}>
             <Col xs={24} md={24} lg={8}>
-              <Form.Item label='First Name' name="firstName" required rules={[{required: true}]}>
-                <Input type="text" placeholder="Enter your first name"/>
-              </Form.Item>
-            </Col>
-            <Col xs={24} md={24} lg={8}>
-              <Form.Item label='Last Name' name="lastName" required rules={[{required: true}]}>
-                <Input type="text" placeholder="Enter your last name"/>
+              <Form.Item label='Name' name="name" required rules={[{required: true}]}>
+                <Input type="text" placeholder="Enter your name"/>
               </Form.Item>
             </Col>
             <Col xs={24} md={24} lg={8}>

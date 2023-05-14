@@ -12,6 +12,8 @@ const PORT = process.env.PORT || 8000;
 connectDB();
 
 app.use('/user', require('./routes/userRoutes'));
+app.use('/admin', require('./routes/adminRoutes'));
+app.use('/doctor', require('./routes/doctorRoutes'));
 
 app.listen(PORT, () => {
 	console.log(`App Listening on PORT ${PORT}`);

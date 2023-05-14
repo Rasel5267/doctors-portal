@@ -22,6 +22,9 @@ const Navbar = () => {
 		navigate('/login');
 		location.reload();
 	}
+
+	const conditionOne = !user?.isAdmin;
+	const conditionTwo = !user?.isDoctor;
   return (
 	<div className="navbar">
 		<Link to='/' className="logo">DocPortal</Link>
@@ -31,30 +34,20 @@ const Navbar = () => {
 					<NavLink to='/'>Home</NavLink>
 				</li>
 				<li>
-					<NavLink to='/doctors'>Doctors</NavLink>
-				</li>
-				<li>
 					<NavLink to='/about'>About Us</NavLink>
 				</li>
 				<li>
 					<NavLink to='/contact'>Contact Us</NavLink>
 				</li>
+				{(conditionOne && conditionTwo) && <NavLink to='/dashboard/apply-doctor'>Apply Doctor</NavLink>}
 				<li className='closeMenu'>
 					<MdOutlineClose onClick={() => setMenu(false)}/>
 				</li>
 			</ul>
 			<div className="profile">
-				{
-					user?.isAdmin ? 
-					<div className='notification'>
-						<NavLink to='/dashboard/notification'><MdNotifications /></NavLink>
-						<span>{user.notification.length}</span>
-					</div>
-					:
-					<li>
-						<NavLink to='/dashboard/apply-doctor'>Apply Doctor</NavLink>
-					</li>
-				}
+				<div className='notification'>
+					<NavLink to='/dashboard/notification'><MdNotifications /> <span>{user?.notification.length}</span></NavLink>
+				</div>
 				<span className='profile-icon' onClick={() => setShowProfile(!showProfile)}><MdOutlineSupervisedUserCircle /><span>{user?.name}</span></span>
 				<div className={showProfile ? "profile-card active" : "profile-card"}>
 					<Link to='/dashboard' onClick={() => setShowProfile(false)}>Dashboard</Link>

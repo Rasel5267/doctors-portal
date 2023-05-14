@@ -2,7 +2,6 @@ import { Tabs, message } from "antd";
 import { hideLoading, showLoading } from "../../redux/features/alertSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 
 const Notification = () => {
@@ -29,8 +28,24 @@ const Notification = () => {
       message.error(error.message);
     }
   }
-  const handleDeleteRead = () => {
-
+  const handleDeleteRead = async () => {
+    dispatch(showLoading());
+    try{
+      const res = await axios.post('http://localhost:8000/user/delete-all-notification', {userId: user._id}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      dispatch(hideLoading());
+      if(res.data.success) {
+        message.success(res.data.message);
+      } else {
+        message.error(res.data.message);
+      }
+    } catch (error) {
+      dispatch(hideLoading());
+      message.error(error.message);
+    }
   }
 
   const items = [
@@ -45,7 +60,7 @@ const Notification = () => {
           {
             user?.notification.map(notification => (
               <div className="card p-2 mb-3" key={user._id}>
-                <Link to={notification.data.onClickPath} className="card-text notification-text">{notification.message}</Link>
+                <span className="card-text notification-text">{notification.message}</span>
               </div>
             ))
           }
@@ -63,7 +78,7 @@ const Notification = () => {
           {
             user?.seennotification.map(notification => (
               <div className="card p-2 mb-3" key={user._id}>
-                <Link to={notification.data.onClickPath} className="card-text notification-text">{notification.message}</Link>
+                <span className="card-text notification-text">{notification.message}</span>
               </div>
             ))
           }

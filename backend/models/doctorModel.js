@@ -4,13 +4,9 @@ const doctorSchema = new mongoose.Schema({
 	userId: {
 		type: String
 	},
-	firstName: {
+	name: {
         type: String,
-        required: [true, "Please enter your first name!"],
-    },
-	lastName: {
-        type: String,
-        required: [true, "Please enter your last name!"],
+        required: [true, "Please enter your name!"],
     },
     email: {
         type: String,
