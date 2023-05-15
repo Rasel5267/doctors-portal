@@ -1,5 +1,5 @@
 const express = require('express');
-const { loginController, registerController, authController, applyDoctor, getAllNotification, deleteAllNotification, getUserInfo, updateProfile, getAllDoctors } = require('../controllers/userController');
+const { loginController, registerController, authController, applyDoctor, getAllNotification, deleteAllNotification, getUserInfo, updateProfile, getAllDoctors, getDoctorById, bookAppointment, bookingAvailability, getAllAppointments } = require('../controllers/userController');
 const auth = require('../middleware/auth');
 
 const router = express.Router();
@@ -17,5 +17,10 @@ router.post('/getUserInfo', auth, getUserInfo);
 router.post('/updateProfile', auth, updateProfile);
 
 router.get('/getAllDoctors', auth, getAllDoctors);
+router.post('/getDoctor', auth, getDoctorById);
+
+router.post('/book-appointment', auth, bookAppointment);
+
+router.post('/appointments', auth, getAllAppointments);
 
 module.exports = router;

@@ -1,11 +1,11 @@
-import { Row, message } from 'antd';
+import { message } from 'antd';
 import axios from "axios";
 import { useEffect, useState } from "react";
 import DoctorCard from '../components/DoctorCard';
+import Banner from '../components/Banner';
 
 const Home = () => {
   const [doctors, setDoctors] = useState([]);
-  console.log(doctors);
   const getDoctors = async () => {
     try {
       const res = await axios.get('http://localhost:8000/user/getAllDoctors', {
@@ -28,13 +28,14 @@ const Home = () => {
   }, []);
 
   return (
-    <div className='home'>
-      <h2 className='text-center mt-5'>Meet Our Dedicated Doctor’s Team</h2>
-      <Row>
+    <div className='home mb-5'>
+      <Banner />
+      <h2 className='text-center my-5'>Meet Our Dedicated Doctor’s Team</h2>
+      <div className='row'>
         {doctors && doctors.map(doctor => (
           <DoctorCard doctor={doctor} key={doctor._id}/>
         ))}
-      </Row>
+      </div>
     </div>
   )
 }

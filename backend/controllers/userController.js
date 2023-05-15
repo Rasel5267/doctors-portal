@@ -2,6 +2,7 @@ const userModel = require('../models/userModels');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const doctorModel = require('../models/doctorModel');
+const appointmentModel = require('../models/appointmentModel');
 
 const registerController = async(req, res) => {
 	try {
@@ -120,7 +121,7 @@ const deleteAllNotification = async (req, res) => {
 		updateUser.password = undefined;
 		res.status(200).send({
 			success: true,
-			message: 'all notification mark as read',
+			message: 'all notification deleted',
 			data: updateUser
 		});
 	} catch (error) {
@@ -167,4 +168,68 @@ const getAllDoctors = async (req, res) => {
 	}
 }
 
-module.exports = { loginController, registerController, authController, applyDoctor, getAllNotification, deleteAllNotification, getUserInfo, updateProfile, getAllDoctors };
+const getDoctorById = async (req, res) => {
+	try {
+		const doctor = await doctorModel.findOne({ _id: req.body.doctorId  });
+		res.status(200).send({
+			success: true,
+			message: 'Doctor fetch success',
+			data: doctor
+		});
+	} catch (error) {
+		res.status(500).send({ success: false, message: error.message})
+	}
+}
+
+const bookAppointment = async (req, res) => {
+	try {
+		const doctorId = req.body.doctorId;
+		const date = req.body.date;
+		const time = req.body.time;
+		req.body.status = "pending";
+		const appointments = await appointmentModel.find({
+			doctorId,
+			date,
+			time,
+		});
+		if (appointments.length > 0) {
+			res.status(200).send({
+			  message: "Appointments not Available at this time",
+			  success: true,
+			});
+		} else {
+			const newAppointment = new appointmentModel(req.body);
+			await newAppointment.save();
+			const user = await userModel.findOne({ _id: req.body.doctorInfo.userId  });
+			user.notification.push({
+				type: "New-appointment-request",
+				message: `A new appointment request from ${req.body.userInfo.name}`,
+				onClickPath: '/dashboard/appointments'
+			});
+			await user.save();
+			res.status(200).send({
+				success: true,
+				message: 'Appointment book successfully',
+			});
+		}
+	} catch (error) {
+		res.status(500).send({ success: false, message: error.message})
+	}
+}
+
+const getAllAppointments = async (req, res) => {
+	try {
+		const appointments = await appointmentModel.find({
+			userId: req.body.userId,
+		  });
+		  res.status(200).send({
+			success: true,
+			message: "Users Appointments Fetch SUccessfully",
+			data: appointments,
+		  });
+	} catch (error) {
+		res.status(500).send({ success: false, message: error.message})
+	}
+}
+
+module.exports = { loginController, registerController, authController, applyDoctor, getAllNotification, deleteAllNotification, getUserInfo, updateProfile, getAllDoctors, getDoctorById, bookAppointment, getAllAppointments };

@@ -28,7 +28,7 @@ const Sidebar = () => {
 	const doctorMenu = [
 		{
 			name: 'Appointments',
-			path: '/dashboard/appointments'
+			path: '/dashboard/doctor/appointments'
 		},
 		{
 			name: 'Notification',

@@ -1,23 +1,31 @@
-import { Col, Form, Input, Row, TimePicker, message } from "antd";
+import { Col, Form, Input, Row, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { hideLoading, showLoading } from "../../redux/features/alertSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import moment from 'moment';
+import { useState } from 'react';
 
 const ApplyDoctor = () => {
   const {user} = useSelector(state => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+
+  const handleTimeChange = (event) => {
+    const { name, value } = event.target;
+    if (name === 'start') {
+      setStartTime(value);
+    } else if (name === 'end') {
+      setEndTime(value);
+    }
+  };
 
   const onFinishHandler = async(values) => {
     try {
       dispatch(showLoading());
       const res = await axios.post('http://localhost:8000/user/apply-doctor', {...values, userId: user._id,
-      timings: [
-        moment(values.timings[0]).format("HH:mm"),
-        moment(values.timings[1]).format("HH:mm"),
-      ]
+      timings: [startTime, endTime]
     }, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -36,6 +44,7 @@ const ApplyDoctor = () => {
       message.error(error.message);
     }
   }
+
   return (
     <div className="apply-doctor">
       <h1 className="text-center py-3">Apply Doctor</h1>
@@ -67,6 +76,11 @@ const ApplyDoctor = () => {
                 <Input type="text" placeholder="Enter your medical name, where you work"/>
               </Form.Item>
             </Col>
+            <Col xs={24} md={24} lg={8}>
+              <Form.Item label='Image URL' name="image" required rules={[{required: true}]}>
+                <Input type="text" placeholder="Enter your image Url"/>
+              </Form.Item>
+            </Col>
           </Row>
           <h4>Professional Details:</h4>
           <Row gutter={20}>
@@ -96,8 +110,23 @@ const ApplyDoctor = () => {
               </Form.Item>
             </Col>
             <Col xs={24} md={24} lg={8}>
-              <Form.Item label='Consultation Timings' name="timings" required rules={[{required: true}]}>
-                <TimePicker.RangePicker format="HH:mm"/>
+              <Form.Item label='Consultation Start Timings' required rules={[{required: true}]}>
+                <Input
+                  type="time"
+                  name="start"
+                  value={startTime}
+                  onChange={handleTimeChange}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={24} lg={8}>
+              <Form.Item label='Consultation End Timings' required rules={[{required: true}]}>
+                <Input
+                  type="time"
+                  name="end"
+                  value={endTime}
+                  onChange={handleTimeChange}
+                />
               </Form.Item>
             </Col>
           </Row>

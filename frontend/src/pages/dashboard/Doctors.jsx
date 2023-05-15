@@ -75,7 +75,10 @@ const Doctors = () => {
   return (
     <div>
       <h1 className="text-center mb-3">Doctors List</h1>
-      <Table columns={columns} dataSource={doctors} />
+      <Table columns={columns} dataSource={doctors} scroll={{
+      x: 'calc(700px + 50%)',
+      y: 240,
+    }}/>
     </div>
   )
 }

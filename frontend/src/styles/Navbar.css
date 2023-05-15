@@ -108,6 +108,13 @@
 	font-size: 13px !important;
 }
 
+@media (max-width: 810px){
+	.navbar nav,
+	.navbar .profile {
+		gap: 1rem;
+	}
+}
+
 @media (max-width: 768px) {
 	.menuToggle,
 	.closeMenu {

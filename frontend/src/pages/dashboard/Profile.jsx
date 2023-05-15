@@ -1,16 +1,31 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { Col, Form, Input, Row, TimePicker, message } from "antd";
+import { Col, Form, Input, Row, message } from "antd";
 import { hideLoading, showLoading } from "../../redux/features/alertSlice";
 import { useDispatch, useSelector } from "react-redux";
-import moment from 'moment';
 
 const Profile = () => {
   const {user} = useSelector(state => state.user);
   const [doctor, setDoctor] = useState(null);
   const params = useParams();
   const dispatch = useDispatch();
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [inputType, setInputType] = useState('text');
+
+  const handleTimeChange = (event) => {
+    const { name, value } = event.target;
+    if (name === 'start') {
+      setStartTime(value);
+    } else if (name === 'end') {
+      setEndTime(value);
+    }
+  };
+
+  const handleFocus = () => {
+    setInputType('time');
+  };
 
   const getDoctorInfo = async () => {
     try {
@@ -37,10 +52,7 @@ const Profile = () => {
     try {
       dispatch(showLoading());
       const res = await axios.post('http://localhost:8000/doctor/updateProfile', {...values, userId: user._id,
-      timings: [
-        moment(values.timings[0]).format("HH:mm"),
-        moment(values.timings[1]).format("HH:mm"),
-      ]
+      timings: [startTime, endTime]
     }, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -63,13 +75,7 @@ const Profile = () => {
     <div>
       <h1 className="text-center py-3">Manage Profile</h1>
       {doctor && (
-        <Form layout='vertical' onFinish={onFinishHandler} className='card p-4 m-3' initialValues={{
-          ...doctor,
-          timings: [
-            moment(doctor.timings[0], "HH:mm"),
-            moment(doctor.timings[1], "HH:mm"),
-          ],
-        }}>
+        <Form layout='vertical' onFinish={onFinishHandler} className='card p-4 m-3' initialValues={doctor}>
           <h4>Personal Details:</h4>
           <Row gutter={20}>
             <Col xs={24} md={24} lg={8}>
@@ -95,6 +101,11 @@ const Profile = () => {
             <Col xs={24} md={24} lg={8}>
               <Form.Item label='Medical Name' name="medical" required rules={[{required: true}]}>
                 <Input type="text" placeholder="Enter your medical name, where you work"/>
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={24} lg={8}>
+              <Form.Item label='Image URL' name="image" required rules={[{required: true}]}>
+                <Input type="text" placeholder="Enter your image Url"/>
               </Form.Item>
             </Col>
           </Row>
@@ -126,8 +137,27 @@ const Profile = () => {
               </Form.Item>
             </Col>
             <Col xs={24} md={24} lg={8}>
-              <Form.Item label='Consultation Timings' name="timings" required rules={[{required: true}]}>
-                <TimePicker.RangePicker format="HH:mm"/>
+              <Form.Item label='Consultation Start Timings' required rules={[{required: true}]}>
+                <Input
+                  type={inputType}
+                  name="start"
+                  placeholder = {doctor.timings[0]}
+                  value={startTime}
+                  onChange={handleTimeChange}
+                  onFocus={handleFocus}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={24} lg={8}>
+              <Form.Item label='Consultation End Timings.' required rules={[{required: true}]}>
+                <Input
+                  type={inputType}
+                  name="end"
+                  placeholder={doctor.timings[1]}
+                  value={endTime}
+                  onChange={handleTimeChange}
+                  onFocus={handleFocus}
+                />
               </Form.Item>
             </Col>
           </Row>

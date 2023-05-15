@@ -56,7 +56,10 @@ const Users = () => {
   return (
     <div>
       <h1 className="text-center mb-3">Users List</h1>
-      <Table columns={columns} key={users._id} dataSource={users} />
+      <Table columns={columns} key={users._id} dataSource={users} scroll={{
+      x: 'calc(700px + 50%)',
+      y: 240,
+    }}/>
     </div>
   )
 }

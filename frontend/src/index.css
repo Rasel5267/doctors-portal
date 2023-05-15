@@ -22,6 +22,20 @@ html, body, #root {
   flex-direction: column;
 }
 
+
+::-webkit-scrollbar {
+  background-color: #95a5a6;
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #2c3e50;
+}
+
+img {
+  max-width: 100%;
+}
+
 .navbar {
   min-height: 55px;
 }
@@ -76,12 +90,6 @@ p {
 .doctor_img {
   max-width: 410px;
   height: 300px;
-}
-
-.single-doctor {
-  max-width: 400px;
-  border: 1px solid #ddd;
-  margin: 1rem auto;
 }
 
 .footer {

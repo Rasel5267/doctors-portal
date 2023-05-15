@@ -26,6 +26,10 @@ const doctorSchema = new mongoose.Schema({
 		type: String,
         required: [true, "Please enter medical name where you work!"],
 	},
+    image: {
+        type: String,
+        required: [true, "Please enter a picture Url"],
+    },
     education: {
         type: String,
         required: [true, "Please enter your Medical College name!"],

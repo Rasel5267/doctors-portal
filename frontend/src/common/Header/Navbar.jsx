@@ -31,15 +31,15 @@ const Navbar = () => {
 		<nav>
 			<ul className={menu ? 'active' : ''}>
 				<li>
-					<NavLink to='/'>Home</NavLink>
+					<NavLink to='/' onClick={() => setMenu(false)}>Home</NavLink>
 				</li>
 				<li>
-					<NavLink to='/about'>About Us</NavLink>
+					<NavLink to='/about' onClick={() => setMenu(false)}>About</NavLink>
 				</li>
 				<li>
-					<NavLink to='/contact'>Contact Us</NavLink>
+					<NavLink to='/contact' onClick={() => setMenu(false)}>Contact</NavLink>
 				</li>
-				{(conditionOne && conditionTwo) && <NavLink to='/dashboard/apply-doctor'>Apply Doctor</NavLink>}
+				{(conditionOne && conditionTwo) && <NavLink to='/dashboard/apply-doctor' onClick={() => setMenu(false)}>Apply Doctor</NavLink>}
 				<li className='closeMenu'>
 					<MdOutlineClose onClick={() => setMenu(false)}/>
 				</li>
