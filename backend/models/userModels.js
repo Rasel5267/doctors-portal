@@ -17,6 +17,13 @@ const userSchema = new mongoose.Schema({
         required: [true, "Please enter your password!"],
         minlength: 6
     },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    otp: {
+        type: String
+    },
     isAdmin: {
         type: Boolean,
         default: false

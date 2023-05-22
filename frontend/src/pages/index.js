@@ -13,5 +13,6 @@ import Users from './dashboard/Users';
 import UserProfile from './dashboard/UserProfile';
 import BookAppointment from './BookAppointment';
 import DoctorAppointment from './dashboard/DoctorAppointment';
+import VerifyAccount from './VerifyAccount';
 
-export {Home, Login, Register, Error, SingleDoctor, Dashboard, Notification, ApplyDoctor, Appointments, Doctors, Profile, Users, UserProfile, BookAppointment, DoctorAppointment};
+export {Home, Login, Register, Error, SingleDoctor, Dashboard, Notification, ApplyDoctor, Appointments, Doctors, Profile, Users, UserProfile, BookAppointment, DoctorAppointment, VerifyAccount};

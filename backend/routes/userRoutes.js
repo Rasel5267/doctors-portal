@@ -1,12 +1,12 @@
 const express = require('express');
-const { loginController, registerController, authController, applyDoctor, getAllNotification, deleteAllNotification, getUserInfo, updateProfile, getAllDoctors, getDoctorById, bookAppointment, bookingAvailability, getAllAppointments } = require('../controllers/userController');
+const { loginController, registerController, authController, applyDoctor, getAllNotification, deleteAllNotification, getUserInfo, updateProfile, getAllDoctors, getDoctorById, bookAppointment, bookingAvailability, getAllAppointments, verifyAccount } = require('../controllers/userController');
 const auth = require('../middleware/auth');
 
 const router = express.Router();
 
 router.post('/login', loginController);
 router.post('/register', registerController);
-
+router.post('/verify', verifyAccount);
 
 router.post('/getUserData', auth, authController);
 

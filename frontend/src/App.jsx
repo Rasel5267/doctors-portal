@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./common/Layout";
 import DashboardLayout from "./common/DashboardLayout";
-import { Dashboard, Error, Home, Login, Notification, Register, SingleDoctor, ApplyDoctor, Appointments, Doctors, Profile, Users, UserProfile, BookAppointment, DoctorAppointment } from "./pages";
+import { Dashboard, Error, Home, Login, Notification, Register, SingleDoctor, ApplyDoctor, Appointments, Doctors, Profile, Users, UserProfile, BookAppointment, DoctorAppointment, VerifyAccount } from "./pages";
 import { useSelector } from 'react-redux';
 import Spinner from "./components/Spinner";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -18,6 +18,7 @@ const App = () => {
         <Route element = {<ProtectedRoute />}>
           <Route path="/" element = {<Layout />}>
             <Route path ="/" element = {<Home />} />
+            <Route path ="/verify-account" element = {<VerifyAccount />} />
             <Route path ="/doctor/:singleDoctorId" element = {<SingleDoctor />} />
             <Route path ="/book-appointment/:doctorId" element = {<BookAppointment />} />
             <Route path ="*" element = {<Error />} />

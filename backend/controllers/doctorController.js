@@ -1,6 +1,7 @@
 const userModel = require('../models/userModels');
 const doctorModel = require('../models/doctorModel');
 const appointmentModel = require('../models/appointmentModel');
+const sendEmail = require('./sendEmail');
 
 const getDoctorInfo = async (req, res) => {
 	try {
@@ -58,6 +59,7 @@ const doctorAppointments = async (req, res) => {
 		message: `your appointment has been updated to ${status}`,
 		onCLickPath: "/doctor-appointments",
 	  });
+	  sendEmail(user.email, `your appointment has been updated to ${status}`);
 	  await user.save();
 	  res.status(200).send({
 		success: true,

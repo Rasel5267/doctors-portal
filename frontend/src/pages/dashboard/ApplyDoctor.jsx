@@ -1,5 +1,5 @@
 import { Col, Form, Input, Row, message } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { hideLoading, showLoading } from "../../redux/features/alertSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -131,7 +131,7 @@ const ApplyDoctor = () => {
             </Col>
           </Row>
           <div className="d-flex justify-content-end">
-            <button className='btn btn-primary' type='submit'>Submit</button>
+            { user?.isVerified ? <button className='btn btn-primary' type='submit'>Submit</button> : <p>Please Verify your Account First <Link to='/verify-account'>Verify</Link></p>}
           </div>
         </Form>
     </div>

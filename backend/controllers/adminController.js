@@ -1,5 +1,6 @@
 const userModel = require('../models/userModels');
 const doctorModel = require('../models/doctorModel');
+const sendEmail = require('./sendEmail');
 
 const getAllDoctors = async(req, res) => {
 	try {
@@ -41,6 +42,8 @@ const changeAccountStatus = async(req, res) => {
 			message: `Your Doctor Account Request Has ${status}`,
 			onClickPath: '/dashboard/notification'
 		});
+
+		sendEmail(user.email, `Your Doctor Account Request Has ${status}`)
 
 		user.isDoctor = status === "approved" ? true : false;
 		await user.save();

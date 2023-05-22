@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { message } from 'antd';
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -124,7 +124,7 @@ const BookAppointment = () => {
                 />
               </div>
               <div className="d-flex gap-4 flex-column">
-                <button className="mt-4 bookBtn" onClick={handleBooking}>Book Appointment</button>
+                { user?.isVerified ? <button className="mt-4 bookBtn" onClick={handleBooking}>Book Appointment</button> : <p className="py-4">Please Verify your Account First <Link to='/verify-account'>Verify</Link></p>}
               </div>
             </div>
           </div>

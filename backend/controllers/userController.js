@@ -3,27 +3,55 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const doctorModel = require('../models/doctorModel');
 const appointmentModel = require('../models/appointmentModel');
+const sendEmail = require('./sendEmail');
 
 const registerController = async(req, res) => {
 	try {
+		const { name, email, password } = req.body;
 		const existingUser = await userModel.findOne({email: req.body.email});
 		if(existingUser) {
 			return res.status(200).send({message: 'User Already Exist', success: false});
 		}
 
-		const password = req.body.password;
 		const salt = await bcrypt.genSalt(10);
 		const hashPassword = await bcrypt.hash(password, salt);
-		req.body.password = hashPassword;
 
-		const newUser = new userModel(req.body);
+		const {otp} = GenerateOtp();
+
+		const newUser = new userModel({
+			name: name,
+			email: email,
+			password: hashPassword,
+			otp: otp,
+		});
+		sendEmail(email, `Your OTP is ${otp}`);
 		await newUser.save();
 		
-		res.status(201).send({message: "Register Successfully", success: true});
+		res.status(200).send({message: "Register Successfully. Login Now", success: true});
 	} catch (error) {
 		res.status(500).send({ success: false, message: error.message})
 	}
 };
+
+const verifyAccount = async(req, res) => {
+	try {
+		const {otp, userId} = req.body;
+		const user = await userModel.findOne({_id: userId});
+		if(!user) {
+			return res.status(200).send({ success: false, message: 'User not found'});
+		}
+		if(user.otp === otp){
+			user.isVerified = true
+			await user.save();
+
+			return res.status(200).send({ success: true, message: 'Account verify successfully'});
+		} else {
+			return res.status(200).send({ success: false, message: 'OTP is not correct'});
+		}
+	} catch (error) {
+		res.status(500).send({ success: false, message: error.message})
+	}
+}
 
 const loginController = async(req, res) => {
 	try {
@@ -48,7 +76,7 @@ const loginController = async(req, res) => {
 
 const authController = async (req, res) => {
 	try {
-		const user = await userModel.findOne({_id: req.body.userId});
+		const user = await userModel.findOne({_id: req.body.userId}).select("-otp");
 		if(!user) {
 			return res.status(200).send({message: "user not found", success: false})
 		} else {
@@ -83,6 +111,7 @@ const applyDoctor = async (req, res) => {
 				onClickPath: '/dashboard/doctors'
 			}
 		})
+		sendEmail(adminUser.email, `${newDoctor.name} has applied for a doctor account`)
 		await userModel.findByIdAndUpdate(adminUser._id, {notification});
 
 		res.status(200).send({message: 'Application successfully submit. Wait for admin confirmation', success: true});
@@ -206,6 +235,7 @@ const bookAppointment = async (req, res) => {
 				message: `A new appointment request from ${req.body.userInfo.name}`,
 				onClickPath: '/dashboard/appointments'
 			});
+			sendEmail(user.email, `A new appointment request from ${req.body.userInfo.name}`)
 			await user.save();
 			res.status(200).send({
 				success: true,
@@ -232,4 +262,11 @@ const getAllAppointments = async (req, res) => {
 	}
 }
 
-module.exports = { loginController, registerController, authController, applyDoctor, getAllNotification, deleteAllNotification, getUserInfo, updateProfile, getAllDoctors, getDoctorById, bookAppointment, getAllAppointments };
+
+const GenerateOtp = () => {
+
+    const otp = Math.floor(10000 + Math.random() * 900000);
+    return {otp};
+}
+
+module.exports = { loginController, verifyAccount, registerController, authController, applyDoctor, getAllNotification, deleteAllNotification, getUserInfo, updateProfile, getAllDoctors, getDoctorById, bookAppointment, getAllAppointments };
