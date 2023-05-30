@@ -1,67 +1,77 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const doctorSchema = new mongoose.Schema({
-	userId: {
-		type: String
+const doctorSchema = new mongoose.Schema(
+	{
+		userId: {
+			type: String,
+		},
+		name: {
+			type: String,
+			required: [true, "Please enter your name!"],
+		},
+		email: {
+			type: String,
+			required: [true, "Please enter your email!"],
+			trim: true,
+			unique: true,
+		},
+		phone: {
+			type: String,
+			required: [true, "Please enter your phone number!"],
+		},
+		address: {
+			type: String,
+			required: [true, "Please enter your address!"],
+		},
+		medical: {
+			type: String,
+			required: [true, "Please enter medical name where you work!"],
+		},
+		image: {
+			type: String,
+			required: [true, "Please enter a picture Url"],
+		},
+		education: {
+			type: String,
+			required: [true, "Please enter your Medical College name!"],
+		},
+		certification: {
+			type: String,
+		},
+		specialization: {
+			type: String,
+			required: [true, "Please enter your specialization area!"],
+		},
+		experience: {
+			type: String,
+			required: [true, "Please enter your experience!"],
+		},
+		consultationFee: {
+			type: Number,
+			required: [true, "Please enter your consultation fee!"],
+		},
+		status: {
+			type: String,
+			default: "pending",
+		},
+		startTime: {
+			type: String,
+			required: [true, "Please enter your consultation Start time"],
+		},
+		endTime: {
+			type: String,
+			required: [true, "Please enter your consultation End time"],
+		},
+		offDay: {
+			type: String,
+			required: [true, "Please enter your consultation End time"],
+		},
 	},
-	name: {
-        type: String,
-        required: [true, "Please enter your name!"],
-    },
-    email: {
-        type: String,
-        required: [true, "Please enter your email!"],
-        trim: true,
-        unique: true
-    },
-	phone: {
-		type: String,
-        required: [true, "Please enter your phone number!"],
-	},
-	address: {
-        type: String,
-        required: [true, "Please enter your address!"],
-    },
-	medical: {
-		type: String,
-        required: [true, "Please enter medical name where you work!"],
-	},
-    image: {
-        type: String,
-        required: [true, "Please enter a picture Url"],
-    },
-    education: {
-        type: String,
-        required: [true, "Please enter your Medical College name!"],
-    },
-	certification: {
-		type: String,
-		required: [false, "Please provide if you have any extra certification!"],
-	},
-    specialization: {
-        type: String,
-        required: [true, "Please enter your specialization area!"],
-    },
-    experience: {
-        type: String,
-        required: [true, "Please enter your experience!"],
-    },
-    consultationFee: {
-        type: Number,
-        required: [true, "Please enter your consultation fee!"],
-    },
-	status: {
-		type: String,
-		default: 'pending'
-	},
-    timings: {
-        type: Object,
-        required: [true, "Please enter your consultation time period!"],
-    }
-}, {
-	timestamps: true,
-	versionKey: false
-});
+	{
+		timestamps: true,
+		versionKey: false,
+	}
+);
 
 const doctorModel = mongoose.model("doctors", doctorSchema);
 
