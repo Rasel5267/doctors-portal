@@ -84,7 +84,9 @@ const BookAppointment = () => {
 
 		// Adjust the start time if it's in the past
 		if (currentTime > start) {
-			start.setMinutes(currentTime.getMinutes() + 15);
+			start.setMinutes(
+				currentTime.getMinutes() + doctor.perConsultationTime
+			);
 		}
 
 		const availableTimeSlots = [];
@@ -107,7 +109,9 @@ const BookAppointment = () => {
 				availableTimeSlots.push(formattedTime);
 			}
 
-			currentSlot.setMinutes(currentSlot.getMinutes() + 15);
+			currentSlot.setMinutes(
+				currentSlot.getMinutes() + doctor.perConsultationTime
+			);
 		}
 
 		const handleTimeSlotClick = (timeSlot) => {

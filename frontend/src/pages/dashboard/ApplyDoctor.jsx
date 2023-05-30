@@ -222,6 +222,19 @@ const ApplyDoctor = () => {
 					</Col>
 					<Col xs={24} md={24} lg={8}>
 						<Form.Item
+							label="Per Consultation Time, Using this time would be calculating how many appointments you accept in a day"
+							name="perConsultationTime"
+							required
+							rules={[{ required: true }]}
+						>
+							<Input
+								type="number"
+								placeholder="Enter Per Consultation Time in Minute"
+							/>
+						</Form.Item>
+					</Col>
+					<Col xs={24} md={24} lg={8}>
+						<Form.Item
 							label="Off Day"
 							name="offDay"
 							required

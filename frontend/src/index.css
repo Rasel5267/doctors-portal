@@ -75,10 +75,11 @@ input {
 }
 
 .slotBtn {
+	width: 70px;
+	height: 50px;
 	outline: none;
 	border: none;
-	padding: 10px 15px;
-	margin: 10px;
+	margin: 8px 6px;
 }
 
 .spinner {

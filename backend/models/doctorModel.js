@@ -62,6 +62,10 @@ const doctorSchema = new mongoose.Schema(
 			type: String,
 			required: [true, "Please enter your consultation End time"],
 		},
+		perConsultationTime: {
+			type: Number,
+			required: [true, "Please enter per consultation time"],
+		},
 		offDay: {
 			type: String,
 			required: [true, "Please enter your consultation End time"],
